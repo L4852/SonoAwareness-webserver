@@ -6,36 +6,47 @@ from flask import Flask, request
 app = Flask(__name__)
 
 
+def analogToDecibel(value):
+    return 20 * math.log(value,10)
+
+
 @app.route('/', methods=['get', 'post'])
 def hello():
     return flask.render_template("hello.html")
 
 
-@app.route('/recieveData', methods=['post'])
-def recieveData():
-    data = request.form
+@app.route('/receiveData', methods=['get'])
+def receiveData():
+    MIC_SEPARATION = 14 # cm
+    SAMPLING_RATE = 15 # kHz
+    data = request.args
 
     if isinstance(data, dict):
-        print("MIC 1:", data['mic1'])
-        print("MIC 2:", data['mic2'])
-        print("Extra Samples", data['samples'])
+        print("V1:", float(data.get('mic1')))
+        print("V2:", float(data.get('mic2')))
+        print("MIC 1:", float(data.get('mic1')))
+        print("MIC 2:", float(data.get('mic2')))
+        print("Extra Samples", data.get('samples'))
 
-        L1 = int(data['mic1'])
-        L2 = int(data['mic2'])
+        L1 = analogToDecibel(float(data.get('mic1')))
+        L2 = analogToDecibel(float(data.get('mic2')))
 
-        D = int(data['samples'])
+        D = int(data.get('samples'))
 
         try:
-            angle = (180 / math.pi) * math.acos((0.07 / (343 * D / 15000)) * (10 ** ((L2 - L1) / 20) - 1))
+            angle = (180 / math.pi) * math.acos(((MIC_SEPARATION/100) / (343 * D / (SAMPLING_RATE * 1000))) * (10 ** ((L2 - L1) / 20) - 1))
             print("ANGLE", angle)
-        except ValueError:
-            print("DOMAIN ERROR")
-
-    return data
+            return {
+                "result": angle
+            }
+        except ValueError or ZeroDivisionError as e:
+            print("ERROR: ", type(e), e)
+            return {"result": "999"}
 
 
 if __name__ == "__main__":
     app.run(
+        host="0.0.0.0",
         debug=True,
         port=5892
     )
