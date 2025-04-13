@@ -26,7 +26,7 @@ def receiveData():
         print("V1:", float(data.get('mic1')))
         print("V2:", float(data.get('mic2')))
 
-        print("Extra Samples: ", data.get('samples'))
+        print("Extra Samples:", data.get('samples'))
 
         L1 = analogToDecibel(float(data.get('mic1')))
         L2 = analogToDecibel(float(data.get('mic2')))
