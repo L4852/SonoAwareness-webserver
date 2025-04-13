@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 def analogToDecibel(value):
-    return 20 * math.log(value,10)
+    return 20 * math.log(value, 10)
 
 
 @app.route('/', methods=['get', 'post'])
@@ -17,8 +17,8 @@ def hello():
 
 @app.route('/receiveData', methods=['get'])
 def receiveData():
-    MIC_SEPARATION = 14 # cm
-    SAMPLING_RATE = 15 # kHz
+    MIC_SEPARATION = 14  # cm
+    SAMPLING_RATE = 15  # kHz
     data = request.args
 
     if isinstance(data, dict):
@@ -33,17 +33,20 @@ def receiveData():
 
         D = int(data.get('samples'))
 
+        if (D == 0):
+            return {"result": "998"}
+
         try:
-            angle = (180 / math.pi) * math.acos(((MIC_SEPARATION/100) / (343 * D / (SAMPLING_RATE * 1000))) * (10 ** ((L2 - L1) / 20) - 1))
+            angle = (180 / math.pi) * math.acos(
+                ((MIC_SEPARATION / 100) / (343 * D / (SAMPLING_RATE * 1000))) * (10 ** ((L2 - L1) / 20) - 1))
             print("ANGLE", angle)
             print("-------------------------")
             return {
                 "result": angle
             }
-        except ValueError or ZeroDivisionError as e:
-            print("ERROR: ", type(e), e)
+        except ValueError:
+            print("ERROR: ", type(e))
             return {"result": "999"}
-
 
 
 if __name__ == "__main__":
