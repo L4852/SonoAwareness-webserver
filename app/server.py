@@ -45,7 +45,7 @@ def receiveData():
             return {
                 "result": angle
             }
-        except ValueError:
+        except ValueError as e:
             print("ERROR: ", type(e))
             return {"result": "999"}
 
