@@ -22,6 +22,7 @@ def receiveData():
     data = request.args
 
     if isinstance(data, dict):
+        print("-" * 20)
         print("V1:", float(data.get('mic1')))
         print("V2:", float(data.get('mic2')))
         print("MIC 1:", float(data.get('mic1')))
@@ -40,7 +41,7 @@ def receiveData():
             angle = (180 / math.pi) * math.acos(
                 ((MIC_SEPARATION / 100) / (343 * D / (SAMPLING_RATE * 1000))) * (10 ** ((L2 - L1) / 20) - 1))
             print("ANGLE", angle)
-            print("-------------------------")
+            print("-"*20)
             return {
                 "result": angle
             }
