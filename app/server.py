@@ -37,7 +37,7 @@ def receiveData():
         print("MIC 2:", L2)
 
         if (D == 0):
-            return {"result": "998"}
+            return {"result": 998}
 
         try:
             angle = (180 / math.pi) * math.acos(
@@ -45,11 +45,11 @@ def receiveData():
             print("ANGLE", angle)
             print("-" * 20)
             return {
-                "result": angle
+                "result": int(angle)
             }
         except ValueError as e:
             print("ERROR: ", type(e))
-            return {"result": "999"}
+            return {"result": 999}
 
 
 if __name__ == "__main__":
