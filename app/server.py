@@ -17,7 +17,7 @@ def hello():
 
 @app.route('/receiveData', methods=['get'])
 def receiveData():
-    MIC_SEPARATION = 14  # cm
+    MIC_SEPARATION = 16  # cm
     SAMPLING_RATE = 15  # kHz
     data = request.args
 
