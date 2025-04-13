@@ -36,12 +36,14 @@ def receiveData():
         try:
             angle = (180 / math.pi) * math.acos(((MIC_SEPARATION/100) / (343 * D / (SAMPLING_RATE * 1000))) * (10 ** ((L2 - L1) / 20) - 1))
             print("ANGLE", angle)
+            print("-------------------------")
             return {
                 "result": angle
             }
         except ValueError or ZeroDivisionError as e:
             print("ERROR: ", type(e), e)
             return {"result": "999"}
+
 
 
 if __name__ == "__main__":
