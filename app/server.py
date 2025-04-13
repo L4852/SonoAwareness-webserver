@@ -25,14 +25,16 @@ def receiveData():
         print("-" * 20)
         print("V1:", float(data.get('mic1')))
         print("V2:", float(data.get('mic2')))
-        print("MIC 1:", float(data.get('mic1')))
-        print("MIC 2:", float(data.get('mic2')))
-        print("Extra Samples", data.get('samples'))
+
+        print("Extra Samples: ", data.get('samples'))
 
         L1 = analogToDecibel(float(data.get('mic1')))
         L2 = analogToDecibel(float(data.get('mic2')))
 
         D = int(data.get('samples'))
+
+        print("MIC 1:", L1)
+        print("MIC 2:", L2)
 
         if (D == 0):
             return {"result": "998"}
@@ -41,7 +43,7 @@ def receiveData():
             angle = (180 / math.pi) * math.acos(
                 ((MIC_SEPARATION / 100) / (343 * D / (SAMPLING_RATE * 1000))) * (10 ** ((L2 - L1) / 20) - 1))
             print("ANGLE", angle)
-            print("-"*20)
+            print("-" * 20)
             return {
                 "result": angle
             }
